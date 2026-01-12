@@ -1,3 +1,5 @@
+using Benchmark.Contracts;
+using Benchmark.Helpers;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
@@ -7,54 +9,28 @@ using BenchmarkDotNet.Reports;
 
 namespace Benchmark.Collections;
 
-[Config(typeof(Config))]
+[Config(typeof(BenchConfig))]
 [HideColumns(Column.Job, Column.RatioSD, Column.AllocRatio)]
 [MemoryDiagnoser]
 [ReturnValueValidator(failOnError: true)]
-public class ListBinarySearch
+public class ListBinarySearch : ICodeAssessment
 {
-    private readonly List<string> fruits;
+    private readonly List<string> _fruits;
     public ListBinarySearch()
     {
-        fruits = ["tangerine", "apple", "kiwi", "pineapple", "strawberry", "grape"];
-        fruits.Sort();
+        _fruits = ["tangerine", "apple", "kiwi", "pineapple", "strawberry", "grape"];
+        _fruits.Sort();
     }
     
     [Benchmark]
     public void BinarySearch()
     {
-        
-        var index = fruits.BinarySearch("apple");
-        // if (index >= 0)
-        // {
-        //     fruits.Insert(index, "banana");
-        // }
-
-       // return fruits;
+        _ = _fruits.BinarySearch("apple");
     }
         
     [Benchmark(Baseline = true)]
     public void IndexOf()
     {
-
-
-        var index = fruits.IndexOf("apple");
-        // if (index > 0)
-        // {
-        //     fruits.Insert(index, "banana");
-        // }
-
-        //return fruits;
-    }
-    
-    private class Config : ManualConfig
-    {
-        public Config()
-        {
-            AddJob(Job.Default.WithId(".NET 8").WithRuntime(CoreRuntime.Core80));
-
-            SummaryStyle =
-                SummaryStyle.Default.WithRatioStyle(RatioStyle.Trend);
-        }
+        _ = _fruits.IndexOf("apple");
     }
 }

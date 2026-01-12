@@ -1,3 +1,4 @@
+using Benchmark.Helpers;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
@@ -7,7 +8,7 @@ using BenchmarkDotNet.Reports;
 
 namespace Benchmark.String;
 
-[Config(typeof(Config))]
+[Config(typeof(BenchConfig))]
 [HideColumns(Column.Job, Column.RatioSD, Column.AllocRatio)]
 [MemoryDiagnoser]
 [ReturnValueValidator(failOnError: true)]
@@ -32,16 +33,5 @@ public class StringFormat
     {
         DateTime thisDate1 = new DateTime(2024, 2, 09);
         return $"Today is {string.Format("{0:MMMM dd, yyyy}",thisDate1)}.";
-    }
-    
-    private class Config : ManualConfig
-    {
-        public Config()
-        {
-            AddJob(Job.Default.WithId(".NET 8").WithRuntime(CoreRuntime.Core80));
-
-            SummaryStyle =
-                SummaryStyle.Default.WithRatioStyle(RatioStyle.Trend);
-        }
     }
 }

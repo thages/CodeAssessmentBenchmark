@@ -1,3 +1,4 @@
+using Benchmark.Contracts;
 using Benchmark.Helpers;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Columns;
@@ -8,7 +9,7 @@ namespace Benchmark.Collections;
 [HideColumns(Column.Job, Column.RatioSD, Column.AllocRatio)]
 [MemoryDiagnoser]
 [ReturnValueValidator(failOnError: true)]
-public class PatternMatch
+public class PatternMatch : ICodeAssessment
 {
     [Benchmark(Baseline = true)]
     public void DefaultValidation()

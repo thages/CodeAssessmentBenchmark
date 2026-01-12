@@ -1,3 +1,5 @@
+using Benchmark.Contracts;
+using Benchmark.Helpers;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
@@ -7,11 +9,11 @@ using BenchmarkDotNet.Reports;
 
 namespace Benchmark.String;
 
-[Config(typeof(Config))]
+[Config(typeof(BenchConfig))]
 [HideColumns(Column.Job, Column.RatioSD, Column.AllocRatio)]
 [MemoryDiagnoser]
 [ReturnValueValidator(failOnError: true)]
-public class CharValidation
+public class CharValidation : ICodeAssessment
 {
     [Benchmark]
     public bool CharMethod()
@@ -25,16 +27,5 @@ public class CharValidation
     {
         char c = 'a';
         return c is (>= 'a' and <= 'z') or (>= 'A' and <= 'Z');
-    }
-    
-    private class Config : ManualConfig
-    {
-        public Config()
-        {
-            AddJob(Job.Default.WithId(".NET 8").WithRuntime(CoreRuntime.Core80));
-
-            SummaryStyle =
-                SummaryStyle.Default.WithRatioStyle(RatioStyle.Trend);
-        }
     }
 }

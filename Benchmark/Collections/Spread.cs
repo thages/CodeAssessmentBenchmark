@@ -3,11 +3,16 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
 using System.Linq;
+using Benchmark.Contracts;
+using Benchmark.Helpers;
 
 namespace Benchmark.Collections;
 
+[Config(typeof(BenchConfig))]
+[HideColumns(Column.Job, Column.RatioSD, Column.AllocRatio)]
 [MemoryDiagnoser]
-public class Spread
+[ReturnValueValidator(failOnError: true)]
+public class Spread : ICodeAssessment
 {
 
    [Benchmark]

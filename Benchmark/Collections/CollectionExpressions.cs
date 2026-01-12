@@ -1,3 +1,5 @@
+using Benchmark.Contracts;
+using Benchmark.Helpers;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
@@ -7,11 +9,11 @@ using BenchmarkDotNet.Reports;
 
 namespace Benchmark.Collections;
 
-[Config(typeof(Config))]
+[Config(typeof(BenchConfig))]
 [HideColumns(Column.Job, Column.RatioSD, Column.AllocRatio)]
 [MemoryDiagnoser]
 [ReturnValueValidator(failOnError: true)]
-public class CollectionExpressions
+public class CollectionExpressions : ICodeAssessment
 {
     [Benchmark(Baseline = true)]
     public List<string> RegularList()
@@ -23,16 +25,5 @@ public class CollectionExpressions
     public List<string> ColExpressionList()
     {
         return ["apple", "banana", "orange"];
-    }
-
-    private class Config : ManualConfig
-    {
-        public Config()
-        {
-            AddJob(Job.Default.WithId(".NET 8").WithRuntime(CoreRuntime.Core80));
-
-            SummaryStyle =
-                SummaryStyle.Default.WithRatioStyle(RatioStyle.Trend);
-        }
     }
 }

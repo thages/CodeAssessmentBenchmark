@@ -1,4 +1,4 @@
-namespace Benchmark.Algorithms.Matrix;
+namespace Benchmark.Helpers;
 
 public static class Constants
 {
